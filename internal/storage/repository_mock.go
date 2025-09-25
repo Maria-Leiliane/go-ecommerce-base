@@ -23,8 +23,8 @@ func (m *MockProductRepository) FindAll() ([]domain.Product, error) {
 	}
 	return m.Products, nil
 }
-func (m *MockProductRepository) FindByID(id int) (domain.Product, error) {
+func (m *MockProductRepository) FindByID(_ int) (domain.Product, error) {
 	return domain.Product{}, m.Error
 }
-func (m *MockProductRepository) Update(product *domain.Product) error { return m.Error }
-func (m *MockProductRepository) Delete(id int) error                  { return m.Error }
+func (m *MockProductRepository) Update(_ *domain.Product) error { return m.Error }
+func (m *MockProductRepository) Delete(_ int) error             { return m.Error }

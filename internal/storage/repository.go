@@ -3,6 +3,7 @@ package storage
 import (
 	"database/sql"
 	"errors"
+	"log"
 
 	"e-commerce.com/internal/domain"
 )
@@ -27,9 +28,14 @@ func (r *pgProductRepository) FindAll() ([]domain.Product, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Printf("Error closing rows on FindAll: %v", err)
+		}
+	}(rows)
 
-	products := []domain.Product{}
+	var products []domain.Product
 	for rows.Next() {
 		var p domain.Product
 		if err := rows.Scan(&p.ID, &p.Name, &p.Price, &p.Amount, &p.Description); err != nil {

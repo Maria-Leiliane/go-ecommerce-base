@@ -33,7 +33,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// setupRouter cria e configura o roteador chi com todas as dependências e rotas.
+// setupRouter creates and configures the chi router with all dependencies and routes.
 func setupRouter(db *sql.DB) *chi.Mux {
 	productRepo := storage.NewProductRepository(db)
 	productH := productHandler.NewProductHandler(productRepo)
@@ -92,7 +92,7 @@ func main() {
 	}
 	log.Println("Database connected and table ready.")
 
-	// Agora o main apenas chama o setupRouter e inicia o servidor.
+	// Just call setupRouter and start the server.
 	router := setupRouter(db)
 	log.Println("Server starting on port :8080")
 	if err := http.ListenAndServe(":8080", router); err != nil {
