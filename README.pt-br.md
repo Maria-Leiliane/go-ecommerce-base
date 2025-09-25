@@ -15,7 +15,7 @@ Uma API RESTful completa e robusta para um catálogo de produtos, construída co
 
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [✨ Funcionalidades](#-funcionalidades)
-- [🛠️ Tecnologias Utilizadas](#️-tecnologias-utilizadas)
+- [🛠️ Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [🚀 Começando](#-começando)
 - [📚 Documentação da API](#-documentação-da-api)
 - [🧪 Executando os Testes](#-executando-os-testes)

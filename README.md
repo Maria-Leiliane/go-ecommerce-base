@@ -15,7 +15,7 @@ A complete and robust RESTful API for a product catalog, built with Go. This pro
 
 - [About The Project](#-about-the-project)
 - [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
+- [🛠️ Tech Stack](#-tech-stack)
 - [🚀 Getting Started](#-getting-started)
 - [📚 API Documentation](#-api-documentation)
 - [🧪 Running Tests](#-running-tests)
