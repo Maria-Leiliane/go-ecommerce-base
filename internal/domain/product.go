@@ -13,7 +13,7 @@ type Product struct {
 
 type ProductRepository interface {
 	Save(product *Product) error
-	FindAll() ([]Product, error)
+	FindAll(page, limit int) ([]Product, int, error)
 	FindByID(id int) (Product, error)
 	Update(product *Product) error
 	Delete(id int) error
