@@ -1,0 +1,164 @@
+type: collection.insomnia.rest/5.0
+name: Go Product API
+meta:
+  id: wrk_eedf367e5b004f66adec3845ba43b9e1
+  created: 1758760372406
+  modified: 1758760372406
+  description: ""
+collection:
+  - url: "{{ _.base_url }}/products"
+    name: List all products
+    meta:
+      id: req_f6aa6a7b881845db80120eb7e1206e09
+      created: 1758760269808
+      modified: 1758760436181
+      isPrivate: false
+      description: ""
+      sortKey: -1758760269828
+    method: GET
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/products"
+    name: Create a new product
+    meta:
+      id: req_3202e89c1a3742d0afcfe55461b0d1ce
+      created: 1758760269815
+      modified: 1758760772228
+      isPrivate: false
+      description: ""
+      sortKey: -1758760269832.5
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Mouse Gamer RGB Plus",
+          "price": 199.9,
+          "amount": 20,
+          "description": "Mouse with 16000 DPI and RGB lumen."
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/products/{id}"
+    name: Returns a product by ID
+    meta:
+      id: req_36534813ecab4137b3dbf025086aedcc
+      created: 1758760269825
+      modified: 1758764528538
+      isPrivate: false
+      description: ""
+      sortKey: -1758760269825
+    method: GET
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/products/{id}"
+    name: Updates an existing product
+    meta:
+      id: req_7966f10fcf6742db90eaf9c66740fbaf
+      created: 1758760269831
+      modified: 1758764534947
+      isPrivate: false
+      description: ""
+      sortKey: -1758760269826.5
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Mouse Gamer RGB",
+          "price": 199.9,
+          "amount": 9,
+          "description": "Mouse with 16000 DPI and RGB lumen."
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/products/{id}"
+    name: Remove a product
+    meta:
+      id: req_3e87cfe81bf14d5187c036fed6b84742
+      created: 1758760269834
+      modified: 1758764517548
+      isPrivate: false
+      description: ""
+      sortKey: -1758760269816.5
+    method: DELETE
+    scripts:
+      preRequest: ""
+      afterResponse: ""
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_cbb030b60450404293130fb116f21035
+    created: 1757800980525
+    modified: 1757800980525
+environments:
+  name: Base Environment
+  meta:
+    id: env_9f989d644fe84c6da3c47b93e69201f0
+    created: 1726272000000
+    modified: 1758760269696
+    isPrivate: false
+  data:
+    base_url: "{{ _.scheme }}://{{ _.host }}{{ _.base_path }}"
+  subEnvironments:
+    - name: OpenAPI env localhost:8080
+      meta:
+        id: env_7a9ff19c077348659ff144f1bf3f2c57
+        created: 1758760269702
+        modified: 1758760269702
+        isPrivate: false
+        sortKey: 1758760269702
+      data:
+        scheme: http
+        base_path: ""
+        host: localhost:8080

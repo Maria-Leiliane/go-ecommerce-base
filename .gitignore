@@ -1,0 +1,22 @@
+# Enviroments
+.env
+
+# Binaries
+main
+go-ecommerce-base
+*.exe
+
+#Swagger
+docs/
+
+#Ides
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+*~
+Thumbs.db
+
+# tests
+coverage.out
