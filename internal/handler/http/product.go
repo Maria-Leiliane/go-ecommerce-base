@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 
@@ -11,17 +12,24 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-// ProductHandler holds the dependencies for the product handlers.
+// ProductHandler Definition of the ProductHandler struct.
 type ProductHandler struct {
 	repo domain.ProductRepository
 }
 
-// NewProductHandler creates a new ProductHandler instance.
+// PaginatedResponse is the structure for the paginated response.
+type PaginatedResponse struct {
+	Data        []domain.Product `json:"data"`
+	TotalPages  int              `json:"total_pages"`
+	CurrentPage int              `json:"current_page"`
+}
+
+// NewProductHandler creates a new instance of ProductHandler.
 func NewProductHandler(repo domain.ProductRepository) *ProductHandler {
 	return &ProductHandler{repo: repo}
 }
 
-// --- Helper Functions ---
+// Aux functions
 
 func (h *ProductHandler) respondWithError(w http.ResponseWriter, code int, message string) {
 	h.respondWithJSON(w, code, map[string]string{"error": message})
@@ -38,8 +46,6 @@ func (h *ProductHandler) respondWithJSON(w http.ResponseWriter, code int, payloa
 	w.WriteHeader(code)
 	_, _ = w.Write(response)
 }
-
-// --- Handler Methods ---
 
 // CreateProduct godoc
 // @Summary      Create a new product
@@ -74,22 +80,43 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 // ListProducts godoc
-// @Summary      List all products
-// @Description  Returns a list of all products registered in the database.
+// @Summary      List all products with pagination
+// @Description  Returns a paginated list of all products.
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   domain.Product
-// @Failure      500  {object}  map[string]string
+// @Param        page   query     int  false  "Page number" default(1)
+// @Param        limit  query     int  false  "Items per page" default(50)
+// @Success      200    {object}  PaginatedResponse
+// @Failure      500    {object}  map[string]string
 // @Router       /products [get]
-func (h *ProductHandler) ListProducts(w http.ResponseWriter, _ *http.Request) {
-	products, err := h.repo.FindAll()
+func (h *ProductHandler) ListProducts(w http.ResponseWriter, r *http.Request) {
+	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	if page < 1 {
+		page = 1
+	}
+
+	limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+	if limit < 1 || limit > 50 {
+		limit = 50
+	}
+
+	products, total, err := h.repo.FindAll(page, limit)
 	if err != nil {
 		h.respondWithError(w, http.StatusInternalServerError, "Failed to retrieve products")
 		log.Printf("Error finding all products: %v", err)
 		return
 	}
-	h.respondWithJSON(w, http.StatusOK, products)
+
+	totalPages := int(math.Ceil(float64(total) / float64(limit)))
+
+	response := PaginatedResponse{
+		Data:        products,
+		TotalPages:  totalPages,
+		CurrentPage: page,
+	}
+
+	h.respondWithJSON(w, http.StatusOK, response)
 }
 
 // GetProduct godoc
