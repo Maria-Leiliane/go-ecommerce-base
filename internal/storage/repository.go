@@ -23,10 +23,22 @@ func (r *pgProductRepository) Save(product *domain.Product) error {
 	return r.db.QueryRow(sqlStatement, product.Name, product.Price, product.Amount, product.Description).Scan(&product.ID)
 }
 
-func (r *pgProductRepository) FindAll() ([]domain.Product, error) {
-	rows, err := r.db.Query("SELECT id, name, price, amount, description FROM products ORDER BY id ASC")
+// FindAll now accepts page and limit, and returns the product slice, total count, and an error.
+func (r *pgProductRepository) FindAll(page, limit int) ([]domain.Product, int, error) {
+	var total int
+	// First, get the total count of products.
+	err := r.db.QueryRow("SELECT COUNT(*) FROM products").Scan(&total)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
+	}
+
+	// Calculate the offset for pagination.
+	offset := (page - 1) * limit
+
+	// Now, fetch the products for the specific page.
+	rows, err := r.db.Query("SELECT id, name, price, amount, description FROM products ORDER BY id ASC LIMIT $1 OFFSET $2", limit, offset)
+	if err != nil {
+		return nil, 0, err
 	}
 	defer func(rows *sql.Rows) {
 		err := rows.Close()
@@ -39,11 +51,16 @@ func (r *pgProductRepository) FindAll() ([]domain.Product, error) {
 	for rows.Next() {
 		var p domain.Product
 		if err := rows.Scan(&p.ID, &p.Name, &p.Price, &p.Amount, &p.Description); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		products = append(products, p)
 	}
-	return products, rows.Err()
+
+	if err = rows.Err(); err != nil {
+		return nil, 0, err
+	}
+
+	return products, total, nil
 }
 
 func (r *pgProductRepository) FindByID(id int) (domain.Product, error) {
