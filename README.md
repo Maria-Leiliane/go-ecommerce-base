@@ -79,11 +79,12 @@ Follow these steps to get a local copy of the project up and running.
 
 ### Installation & Configuration
 
-1.  **Clone the repository:**  
-      ```bash
-        git clone https://github.com/Maria-Leiliane/go-ecommerce-base.git
-        cd go-ecommerce-base
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Maria-Leiliane/go-ecommerce-base.git
+    cd go-ecommerce-base
     ```
+
 2.  **Configure Environment Variables:**
     Copy the example environment file. This file will be used to configure the database connection.
     ```bash

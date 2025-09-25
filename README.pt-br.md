@@ -81,7 +81,7 @@ Siga estes passos para obter uma cópia local do projeto em execução.
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://your-repository-url.git](https://your-repository-url.git)
+    git clone https://github.com/Maria-Leiliane/go-ecommerce-base.git
     cd go-ecommerce-base
     ```
 
