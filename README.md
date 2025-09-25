@@ -134,7 +134,7 @@ You need a running PostgreSQL server. Choose one of the sub-options below.
         ```bash
         sudo -u postgres psql
         ```
-    2.  Run the following SQL commands to create a dedicated user and database. **Replace `myappuser` and `strongpassword` with your own secure credentials.**
+    2.  Run the following SQL commands to create a dedicated user and database. **Replace `myappuser` and `mypassword` with your own secure credentials.**
         ```sql
         CREATE DATABASE "products-db";
         CREATE USER myappuser WITH ENCRYPTED PASSWORD 'mypassword';
