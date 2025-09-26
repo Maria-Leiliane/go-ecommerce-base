@@ -1,6 +1,6 @@
 # --- Step 1: Build Stage ---
-# Uses the official Node.js image with Alpine for a lightweight build.
-FROM node:22-alpine AS builder
+# Uses the official Node.js 'slim' variant for a small and compatible build.
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
