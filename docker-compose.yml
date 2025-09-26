@@ -10,12 +10,14 @@ services:
       - "5433:5432"
     networks:
       - ecommerce-net
-    #  Healthcheck for Postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d ${DB_NAME:-products-db}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-admin} -d ${DB_NAME:-products-db}" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data
 
   api:
     build: .
@@ -33,7 +35,24 @@ services:
       DB_NAME: ${DB_NAME:-products-db}
     networks:
       - ecommerce-net
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./ecommerce-frontend
+      dockerfile: Dockerfile
+    container_name: react-app
+    ports:
+      - "3000:80"
+    networks:
+      - ecommerce-net
+    depends_on:
+      - api
+    restart: unless-stopped
 
 networks:
   ecommerce-net:
     driver: bridge
+
+volumes:
+  db-data:

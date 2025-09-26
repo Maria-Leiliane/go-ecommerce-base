@@ -1,34 +1,35 @@
-# Step Build
-# Official Go image as a base for compiling the application.
+# --- Step 1: Compilation (Builder) ---
+# Uses the official Go image with Alpine for a smaller build.
 FROM golang:1.25-alpine AS builder
 
 # Defining the working directory within the container.
 WORKDIR /app
 
-# Copy module management files. go.sum may not exist
+# Copies the module files first to take advantage of Docker's layer cache.
+# 'go mod download' will only be rerun if go.mod/go.sum changes.
 COPY go.mod go.sum* ./
 
 # Download dependencies.
 RUN go mod download
 
+# Copies the rest of the source code.
 COPY . .
 
-# Compiles the application, creating a static executable optimized for Linux.
-# The -o flag defines the name of the output file.
+# Statically compiles the application into a single executable.
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/main ./main.go
 
-# Final Step
-# Minimal base image (alpine), as Go tools are no longer needed.
+# --- Step 2: Final Image (Production) ---
+# Uses a minimal image, as we only need the binary to run. FROM alpine:latest
 FROM alpine:latest
 
 # Defining the working directory within the container.
 WORKDIR /app
 
-# Copy ONLY the compiled executable from the build stage.
+# Copies only the compiled executable from the build step.
 COPY --from=builder /app/main .
 
-# Exposes port 8080 so we can connect to the API from outside the container.
+# Exposes the port the API will use.
 EXPOSE 8080
 
-# Command executed when the container starts.
+# Command to start the application.
 CMD ["/app/main"]
