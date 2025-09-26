@@ -29,21 +29,29 @@ Este projeto implementa uma API RESTful para gerenciar um catálogo de produtos 
 
 ### Diagrama da Arquitetura
 
+O aplicativo é totalmente conteinerizado com o Docker Compose, criando uma rede isolada para a comunicação dos serviços. O usuário interage com o aplicativo React, que por sua vez se comunica com a API Go.
+
 ```mermaid
 graph TD
-    A[Cliente] -- Requisição HTTP --> B{Roteador Chi};
-    B -- Chama --> C[Handlers de Produto];
-    C -- Usa Interface --> D[Repositório de Produto];
-    D -- Executa SQL --> E[(Banco de Dados PostgreSQL)];
-    subgraph Ambiente Docker
-        F[Container da API Go]
-        G[Container do Postgres]
-        F <--> G
+    subgraph Browser
+        A[React Frontend App]
     end
-    A --> F
+
+    subgraph "Your Machine (localhost)"
+        B[NGINX Container <br> Port 3000]
+        C[Go API Container <br> Port 8080]
+    end
+
+    subgraph "Internal Docker Network"
+        D[PostgreSQL Container <br> Port 5432]
+    end
+    
+    A -- Interacts with --> B;
+    B -- Proxies API calls to --> C;
+    C -- Connects to --> D;
 ```
 
----
+-----
 
 ## ✨ Funcionalidades
 
@@ -54,18 +62,17 @@ graph TD
 -   🗂️ **Arquitetura Limpa** para manutenibilidade e escalabilidade.
 -   ⚙️ **Configuração Baseada em Ambiente** usando arquivos `.env`.
 
----
+-----
 
 ## 🛠️ Tecnologias Utilizadas
 
--   **Go (Golang):** Linguagem principal do backend.
--   **PostgreSQL:** Banco de dados relacional.
--   **Chi:** Roteador HTTP leve e idiomático.
--   **Docker & Docker Compose:** Containerização e orquestração.
--   **Testcontainers-go:** Para testes E2E isolados com um banco de dados real.
--   **Swag:** Geração automática de documentação OpenAPI/Swagger.
+- **Back-end:** Go, Chi (Roteador), PostgreSQL
+- **Front-end:** React, Vite, Axios
+- **Containerização:** Docker, Docker Compose
+- **Testes:** Pacote de testes nativo do Go, Testcontainers-go
+- **Documentaçã da API:** Swag (OpenAPI)
 
----
+-----
 
 ## 🚀 Começando
 
@@ -74,47 +81,63 @@ Siga estes passos para obter uma cópia local do projeto em execução.
 ### Pré-requisitos
 
 -   [Go](https://go.dev/dl/) (versão 1.21 ou superior)
--   [Docker](https://www.docker.com/get-started/) & Docker Compose
--   *(Opcional)* Uma instalação local do [PostgreSQL](https://www.postgresql.org/download/) se você optar por não usar o Docker para o banco de dados.
+-   [Docker](https://www.docker.com/get-started/) & Docker Compose *(Opcional)*  
+-   Uma instalação local do [PostgreSQL](https://www.postgresql.org/download/) se você optar por não usar o Docker para o banco de dados.
 
 ### Instalação e Configuração
 
 1.  **Clone o repositório:**
+
     ```bash
     git clone https://github.com/Maria-Leiliane/go-ecommerce-base.git
     cd go-ecommerce-base
     ```
 
 2.  **Configure as Variáveis de Ambiente:**
-    Copie o arquivo de ambiente de exemplo. Este arquivo será usado para configurar a conexão com o banco de dados.
+    Copie o arquivo de ambiente de exemplo. Os valores padrão são configurados para o método de desenvolvimento local.
+
     ```bash
     cp env.example .env
     ```
-    Você irá editar o arquivo `.env` nos próximos passos, dependendo do método escolhido.
+    
+3. **Instalar dependências do frontend:**
+
+   ```bash
+    cd ecommerce-frontend
+    npm install
+    cd .. 
+    ```
 
 ### Executando o Projeto
 
 Escolha um dos métodos a seguir para executar a aplicação.
 
-#### Opção 1: Usando Docker Compose (Recomendado)
-Este método constrói e executa tanto a API quanto o banco de dados PostgreSQL em containers isolados. É a forma mais simples e reproduzível de começar.
+#### Opção 1: Usando Docker Compose
 
-1.  **Construa e execute os containers em segundo plano:**
+Este método cria e executa todo o aplicativo full-stack (frontend, API e banco de dados) em contêineres isolados.
+
+1. **Construa e execute os containers em segundo plano:**
+
     ```bash
     docker compose up --build -d
     ```
-    *(Este comando usa as variáveis padrão do `docker-compose.yml` para configurar o banco. Nenhuma modificação no `.env` é necessária para este método, a menos que você queira alterar os padrões.)*
 
-2.  **Para visualizar os logs da API em tempo real:**
+2. **Para visualizar os logs da API em tempo real:**
+
     ```bash
     docker compose logs -f api
     ```
 
-3.  **Para parar e remover todos os containers:**
+3. **Acesse o aplicativo:**
+
+   - **Frontend:** Abra seu navegador em **`http://localhost:3000`**
+   - **Backend API:** Acessível em `http://localhost:8080`
+
+4. **Para parar e remover todos os containers:**
+
     ```bash
     docker compose down
     ```
-Sua API estará disponível em `http://localhost:8080`.
 
 #### Opção 2: Rodando a API Go Localmente (Para Desenvolvimento)
 Este método é ideal para o desenvolvimento ativo, permitindo que você execute o código Go diretamente na sua máquina.
@@ -123,7 +146,8 @@ Este método é ideal para o desenvolvimento ativo, permitindo que você execute
 Você precisa de um servidor PostgreSQL em execução. Escolha uma das sub-opções abaixo.
 
 * **Sub-opção A: Rodar o PostgreSQL no Docker (Recomendado para consistência)**
-    ```bash
+    
+  ```bash
     # Este comando inicia um container PostgreSQL com as credenciais padrão
     docker compose up -d postgres
     ```
@@ -131,10 +155,12 @@ Você precisa de um servidor PostgreSQL em execução. Escolha uma das sub-opç�
 * **Sub-opção B: Usar uma Instalação Nativa do PostgreSQL**
   Isto assume que você já tem o servidor PostgreSQL instalado no seu sistema operacional.
     1.  Abra o `psql` com um superusuário (como o `postgres`):
+  
         ```bash
         sudo -u postgres psql
         ```
     2.  Execute os seguintes comandos SQL para criar um usuário e um banco de dados dedicados. **Substitua `meuusuario` e `minhasenha` por suas próprias credenciais.**
+  
         ```sql
         CREATE DATABASE "products-db";
         CREATE USER meuusuario WITH ENCRYPTED PASSWORD 'minhasenha';
@@ -143,8 +169,10 @@ Você precisa de um servidor PostgreSQL em execução. Escolha uma das sub-opç�
         ```
 
 **Passo 2: Configure o `.env` e Execute a Aplicação**
+
 1.  Abra o arquivo `.env` que você criou anteriormente.
 2.  Garanta que as variáveis correspondem à sua configuração de banco de dados (sejam os padrões do Docker ou as que você criou na Sub-opção B). `DB_HOST` deve ser `localhost`.
+
     ```ini
     DB_HOST=localhost
     DB_PORT=5432
@@ -152,14 +180,27 @@ Você precisa de um servidor PostgreSQL em execução. Escolha uma das sub-opç�
     DB_PASSWORD=admin     # Ou 'senhasegura'
     DB_NAME=products-db
     ```
+    
 3.  Instale as dependências e execute a aplicação Go:
+
     ```bash
     go mod tidy
     go run .
     ```
+    
 Sua API estará disponível em `http://localhost:8080`.
 
----
+**Execute o aplicativo frontend sem o Docker**
+Abra um **terceiro terminal** no diretório frontend (`go-ecommerce-base/ecommerce-frontend`):  
+
+```bash
+cd ecommerce-frontend
+npm run dev
+```
+
+Agora você pode acessar o frontend em **`http://localhost:5173`**.
+
+-----
 
 ## 📚 Documentação da API
 
@@ -169,42 +210,50 @@ Este projeto usa `swag` para gerar documentação interativa da API a partir dos
     **[http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)**
 
 -   **Para gerar/atualizar a documentação:**
+
     ```bash
     swag init -g main.go
     ```
 
 -   **Para testar com o Insomnia:** Importe a coleção pré-exportada do Insomnia localizada em `collection/collections-openapi.yaml`.
 
----
+-----
 
 ## 🧪 Executando os Testes
 
 O projeto inclui uma suíte de testes end-to-end (E2E) completa.
 
 -   **Para rodar todos os testes:**
+
     ```bash
     # O timeout é aumentado para dar tempo ao container Docker iniciar no teste E2E.
     go test -v -timeout 60s ./...
     ```
 
----
+-----
 
 ## 📁 Estrutura do Projeto
 
 ```
 .
-├── collection/         # Arquivo de coleção do Insomnia
-├── docs/               # Arquivos auto-gerados do Swagger/OpenAPI
-├── internal/           # Código privado da aplicação
-│   ├── domain/         # Entidades e interfaces de negócio
-│   ├── handler/http/   # Handlers e rotas HTTP
-│   └── storage/        # Implementação do repositório
-├── Dockerfile          # Instruções para construir o container da API
-├── docker-compose.yml  # Arquivo Docker Compose para orquestração
-├── e2e_test.go         # Teste end-to-end
-├── go.mod              # Dependências do Go
-├── LICENCE             # Regras de distribuição
-├── main.go             # Ponto de entrada da aplicação
-├── README.md           # Este arquivo (versão em inglês)
-└── README.pt-br.md     # Versão em português deste arquivo
+├── collection/          # Arquivo de coleção do Insomnia para testes de API.
+├── docs/                # Arquivos de documentação Swagger/OpenAPI gerados automaticamente.
+├── ecommerce-frontend/  # Código-fonte do aplicativo frontend React.
+│   ├── public/          # Recursos estáticos para o frontend (como logotipos, favicons).
+│   ├── src/             # Código-fonte principal do aplicativo React.
+│   │   ├── components/  # Componentes React reutilizáveis (Formulário, Lista, Cabeçalho, etc.).
+│   │   └── services/    # Lógica de comunicação de API centralizada (axios).
+│   ├── Dockerfile       # Instruções para construir o contêiner frontend de produção.
+│   └── nginx.conf       # Configuração do Nginx para servir o aplicativo React.
+├── internal/            # Código privado do aplicativo Go (não importável por outros projetos).
+│   ├── domain/          # Entidades de negócios principais e interfaces de repositório.
+│   ├── handler/http/    # Manipuladores HTTP que gerenciam solicitações e respostas.
+│   └── storage/         # Implementação do repositório de banco de dados.
+├── Dockerfile           # O projeto para construir a imagem Docker do backend Go.
+├── docker-compose.yml   # O arquivo de orquestração para executar o aplicativo full-stack.
+├── e2e_test.go          # O conjunto de testes completo para a API Go.
+├── go.mod / go.sum      # Arquivos do módulo Go que definem as dependências do backend.
+├── main.go              # O ponto de entrada para o aplicativo de backend Go.
+├── README.md            # Este arquivo (versão em inglês)
+└── README.pt-br.md      # Versão em português deste arquivo
 ```
