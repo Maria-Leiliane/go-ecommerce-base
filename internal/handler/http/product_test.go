@@ -41,9 +41,9 @@ func TestListProductsHandler(t *testing.T) {
 	}
 
 	// Check if the expected data is in the response body.
-	expected := `[{"id":1,"name":"Test Product","price":10,"amount":5,"description":"A test product"}]`
+	expected := `{"data":[{"id":1,"name":"Test Product","price":10,"amount":5,"description":"A test product"}],"total_pages":1,"current_page":1}`
+
 	if strings.TrimSpace(rr.Body.String()) != expected {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			rr.Body.String(), expected)
+		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
 	}
 }
