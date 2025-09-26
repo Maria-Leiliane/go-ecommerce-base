@@ -242,7 +242,8 @@ The project includes an E2E test suite for the backend.
 │   ├── public/          # Static assets for the frontend (like logos, favicons).
 │   ├── src/             # Main source code for the React app.
 │   │   ├── components/  # Reusable React components (Form, List, Header, etc.).
-│   │   └── services/    # Centralized API communication logic (axios).
+│   │   ├── services/    # Centralized API communication logic (axios).
+│   │   └── types/       # Component typing
 │   ├── Dockerfile       # Instructions to build the production frontend container.
 │   └── nginx.conf       # Nginx configuration to serve the React app.
 ├── internal/            # Private Go application code (not importable by other projects).

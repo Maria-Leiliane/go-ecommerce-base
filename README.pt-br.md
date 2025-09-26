@@ -242,7 +242,8 @@ O projeto inclui uma suíte de testes end-to-end (E2E) completa.
 │   ├── public/          # Recursos estáticos para o frontend (como logotipos, favicons).
 │   ├── src/             # Código-fonte principal do aplicativo React.
 │   │   ├── components/  # Componentes React reutilizáveis (Formulário, Lista, Cabeçalho, etc.).
-│   │   └── services/    # Lógica de comunicação de API centralizada (axios).
+│   │   ├── services/    # Lógica de comunicação de API centralizada (axios).
+│   │   └── types/       # Tipagem de componentes
 │   ├── Dockerfile       # Instruções para construir o contêiner frontend de produção.
 │   └── nginx.conf       # Configuração do Nginx para servir o aplicativo React.
 ├── internal/            # Código privado do aplicativo Go (não importável por outros projetos).
