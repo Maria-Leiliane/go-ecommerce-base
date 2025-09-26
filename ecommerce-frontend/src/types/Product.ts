@@ -1,7 +1,7 @@
 export interface Product {
-    id?: number;       // opcional, pois produto novo ainda não tem ID
+    id?: number;
     name: string;
-    price: number;     // sempre número, inicialize como 0
+    price: number;
     amount: number;
     description?: string;
 }
