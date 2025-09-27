@@ -7,8 +7,6 @@
 ![Docker Support](https://img.shields.io/badge/Docker-Supported-blue.svg?logo=docker)
 ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue.svg?logo=postgresql)
 
-A complete and robust RESTful API for a product catalog, built with Go. This project serves as a comprehensive backend solution featuring a clean architecture, containerization, automated testing, and interactive documentation.
-
 ---
 
 ## 📋 Table of Contents

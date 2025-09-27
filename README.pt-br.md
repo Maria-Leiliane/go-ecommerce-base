@@ -7,8 +7,6 @@
 ![Docker Support](https://img.shields.io/badge/Docker-Compatível-blue.svg?logo=docker)
 ![PostgreSQL](https://img.shields.io/badge/Banco_de_Dados-PostgreSQL-blue.svg?logo=postgresql)
 
-Uma API RESTful completa e robusta para um catálogo de produtos, construída com Go. Este projeto serve como uma solução de backend abrangente, apresentando uma arquitetura limpa, containerização, testes automatizados e documentação interativa.
-
 ---
 
 ## 📋 Tabela de Conteúdos
@@ -37,12 +35,12 @@ graph TD
         A[React Frontend App]
     end
 
-    subgraph "Your Machine (localhost)"
+    subgraph "Sua Maquina (localhost)"
         B[NGINX Container <br> Port 3000]
         C[Go API Container <br> Port 8080]
     end
 
-    subgraph "Internal Docker Network"
+    subgraph "Rede Interna Docker"
         D[PostgreSQL Container <br> Port 5432]
     end
     
