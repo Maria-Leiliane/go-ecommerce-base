@@ -6,7 +6,6 @@
 ![License](https://img.shields.io/badge/Licença-MIT-green.svg)
 ![Docker Support](https://img.shields.io/badge/Docker-Compatível-blue.svg?logo=docker)
 ![PostgreSQL](https://img.shields.io/badge/Banco_de_Dados-PostgreSQL-blue.svg?logo=postgresql)
-
 ---
 
 ## 📋 Tabela de Conteúdos
@@ -31,22 +30,22 @@ O aplicativo é totalmente conteinerizado com o Docker Compose, criando uma rede
 
 ```mermaid
 graph TD
-    subgraph Browser
-        A[React Frontend App]
+    subgraph Navegador
+        A[Aplicação Frontend React]
     end
 
-    subgraph "Sua Maquina (localhost)"
-        B[NGINX Container <br> Port 3000]
-        C[Go API Container <br> Port 8080]
+    subgraph "Sua Máquina (localhost)"
+        B[Contêiner NGINX <br> Porta 3000]
+        C[Contêiner da API Go <br> Porta 8080]
     end
 
-    subgraph "Rede Interna Docker"
-        D[PostgreSQL Container <br> Port 5432]
+    subgraph "Rede Docker Interna"
+        D[Contêiner PostgreSQL <br> Porta 5432]
     end
     
-    A -- Interacts with --> B;
-    B -- Proxies API calls to --> C;
-    C -- Connects to --> D;
+    A -- Interage com --> B;
+    B -- Encaminha chamadas da API para --> C;
+    C -- Conecta-se a --> D;
 ```
 
 -----
