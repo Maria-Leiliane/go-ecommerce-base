@@ -78,7 +78,7 @@ Siga estes passos para obter uma cópia local do projeto em execução.
 ### Pré-requisitos
 
 -   [Go](https://go.dev/dl/) (versão 1.21 ou superior)
--   [Docker](https://www.docker.com/get-started/) & Docker Compose *(Opcional)*  
+-   [Docker](https://www.docker.com/get-started/) & Docker Compose
 -   Uma instalação local do [PostgreSQL](https://www.postgresql.org/download/) se você optar por não usar o Docker para o banco de dados.
 
 ### Instalação e Configuração

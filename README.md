@@ -79,7 +79,7 @@ Follow these steps to get a local copy of the project up and running.
 ### Prerequisites
 
 -   [Go](https://go.dev/dl/) (version 1.21 or higher)
--   [Docker](https://www.docker.com/get-started/) & Docker Compose *(Optional)*
+-   [Docker](https://www.docker.com/get-started/) & Docker Compose 
 -   A local installation of [PostgreSQL](https://www.postgresql.org/download/) if you choose not to use Docker for the database.
 
 ### Installation & Configuration
