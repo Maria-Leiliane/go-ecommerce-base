@@ -5,7 +5,8 @@
 ![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue.svg)
 ![License](https://img.shields.io/badge/Licença-MIT-green.svg)
 ![Docker Support](https://img.shields.io/badge/Docker-Compatível-blue.svg?logo=docker)
-![PostgreSQL](https://img.shields.io/badge/Banco_de_Dados-PostgreSQL-blue.svg?logo=postgresql)
+![PostgreSQL](https://img.shields.io/badge/Banco_de_Dados-PostgreSQL-blue.svg?logo=postgresql) 
+
 ---
 
 ## 📋 Tabela de Conteúdos
@@ -23,6 +24,7 @@
 ## 📖 Sobre o Projeto
 
 Este projeto implementa uma API RESTful para gerenciar um catálogo de produtos usando uma abordagem de **Arquitetura Limpa**, separando claramente as responsabilidades em camadas distintas (Domínio, Armazenamento, Handler e Main).
+A estrutura do front-end esta junto com backend sómente para facilitar a valiação do projeto.  
 
 ### Diagrama da Arquitetura
 

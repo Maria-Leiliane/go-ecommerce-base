@@ -24,6 +24,7 @@
 ## 📖 About The Project
 
 This project implements a complete CRUD (Create, Read, Update, Delete) system for managing a product catalog. It is structured using a **Clean Architecture** approach on the backend and a **Component-Based** architecture on the frontend.
+The front-end structure is together with the backend only to facilitate the evaluation of the project.
 
 ### Architecture Diagram
 
